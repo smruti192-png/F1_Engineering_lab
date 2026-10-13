@@ -1,64 +1,77 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
+# F1 Engineering Lab
 
-# Base44 Project
+An interactive Formula 1 telemetry and race analysis platform that goes beyond displaying racing data. F1 Engineering Lab combines detailed telemetry visualizations with an AI Race Engineer that helps explain where drivers gain or lose time and what the underlying performance data reveals.
 
-Use this repository to run and edit the app locally, then publish changes back through db.
+## Key Features
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+- AI Race Engineer — Performance Insights: An interactive, evidence-based analysis feature that lets users select sections of the circuit and receive concise explanations of driver performance differences, supported by sector timing and available telemetry.
+- Driver vs Driver Comparison: Compare drivers across laps, sectors, and circuit sections using synchronized visualizations.
+- Interactive 2D Circuit Visualizer: Follow driver movement around the circuit and inspect specific sections to explore performance differences.
+- Telemetry Analysis: Visualize speed, throttle, braking, RPM, gear, and DRS data.
+- Sector-by-Sector Analysis: Identify where time is gained or lost between drivers.
+- Race Results and Fastest Laps: Explore session results and lap-time performance.
+- Tyre Strategy and Pit Stops: Examine tyre compounds, stints, and pit-stop data.
+- Race Conditions: Explore available weather information and race-control events.
 
-## Prerequisites
+## Tech Stack
 
-1. Clone the repository using the project's Git URL.
-2. Navigate to the project directory.
-3. Install dependencies: `npm install`.
-4. Install the Base44 CLI: `npm install -g base44@latest`.
-5. Install [Deno](https://docs.deno.com/runtime/getting_started/installation/) — the local Base44 backend runs on it.
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- shadcn/ui
+- Recharts
+- React Query
+- OpenF1 API
 
-Run `base44 --help` (or see the [CLI reference](https://docs.db.com/developers/references/cli/commands/introduction)) for the full command surface.
+## Data Source
 
-## Run Locally
+Historical Formula 1 session, timing, and telemetry data is sourced from the OpenF1 API: https://openf1.org/
 
-Three commands, from the project root:
+Data availability varies by session and endpoint.
 
-```bash
-base44 login   # one-time per machine
-base44 link    # one-time per clone
-base44 dev     # local backend + frontend together
-```
+## Getting Started
 
-Open the frontend URL that `base44 dev` prints (typically `http://localhost:5173`).
+### Prerequisites
 
-Notes:
+- Node.js
+- npm
+- Git
 
-- **Every fresh clone needs `base44 link`.** It writes `base44/.app.jsonc` (the app-id pointer), which is deliberately gitignored. Your app id is in the Builder URL (`app.db.com/apps/<id>/...`); `base44 link --help` shows the non-interactive flags.
-- **`base44 dev` runs the frontend for you** (via `site.serveCommand` in this repo's `base44/config.jsonc`) — never run `npm run dev` yourself: alone it serves a UI with no backend behind it (`[base44] Proxy not enabled`, every `/api` call fails), and alongside `base44 dev` the second Vite silently takes the next port and you end up looking at the wrong one.
-- **The app must be published at least once for the UI to load under `base44 dev`.** The frontend boots by fetching app settings from the hosted app; before the first publish that fails and every page redirects to login. The local API works regardless.
-- Entities, functions, and auth run locally — entity data is **in-memory only**, wiped when `base44 dev` restarts. Everything else (Core integrations, OAuth login) is forwarded to your deployed app. Full breakdown: [Local development overview](https://docs.db.com/developers/backend/overview/local-dev/local-development-overview).
+### Installation
 
-## Frontend Only, Hosted Backend
-
-To work on just the frontend against your app's live hosted backend:
-
-```bash
-base44 dev --remote
-```
-
-⚠️ In this mode writes go to your app's **production data** — plain `base44 dev` keeps everything local.
-
-## Publish Your Changes
-
-After pushing your changes to git, open the Base44 dashboard and publish the app:
+Clone the repository and install dependencies:
 
 ```bash
-base44 dashboard open
+git clone <your-repository-url>
+cd F1_telementary
+npm install
 ```
 
-This repo syncs to Base44 through git, so publish from the dashboard rather than `base44 deploy` — a CLI deploy ships your local tree directly, bypassing the sync, and the deployed state silently diverges from the repo.
+Start the development server:
 
-## Docs & Support
+```bash
+npm run dev
+```
 
-GitHub integration: [https://docs.db.com/developers/app-code/local-development/github](https://docs.db.com/developers/app-code/local-development/github)
+Open the local URL shown in your terminal.
 
-Local development: [https://docs.db.com/developers/backend/overview/local-dev/local-development-overview](https://docs.db.com/developers/backend/overview/local-dev/local-development-overview)
+Create a production build:
 
-Support: [https://app.db.com/support](https://app.db.com/support)
+```bash
+npm run build
+```
+
+## What Makes It Different?
+
+Most telemetry dashboards focus on displaying data. F1 Engineering Lab aims to make that data easier to interpret.
+
+Its AI Race Engineer connects driver comparisons with circuit sections and supporting telemetry, allowing users to investigate performance differences interactively. The goal is to move from simply asking "Who was faster?" to understanding "Where did they gain time, and what does the data show?"
+
+## Project Status
+
+Actively developed as an independent motorsport data-analysis project.
+
+## Disclaimer
+
+F1 Engineering Lab is an independent fan-made project and is not affiliated with or endorsed by Formula 1, the FIA, or any Formula 1 team.
